@@ -15,7 +15,7 @@ li > .btn {
   margin-top: 0.5rem;
 }
 .section {
-  padding: inherit;
+  padding-right: 0;
   font-family: inherit;
   padding-top: 1rem;
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { Fragment } from "react";
 import Section from "./components/Section";
 import "./App.css";
 import logo from "./logo.png";
@@ -9,15 +9,20 @@ class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: null,
+      mylist: null,
+      recommendations: null,
       isLoading: false,
       error: null,
     };
     this.fetchData = this.fetchData.bind(this);
+    this.handleClick = this.handleClick.bind(this);
   }
   componentDidMount() {
     this._isMounted = true;
     this.fetchData();
+  }
+  componentDidUpdate() {
+    console.log(this.state.mylist);
   }
   componentWillMount() {
     this._isMounted = false;
@@ -27,10 +32,10 @@ class App extends React.Component {
     fetch(mockAPI)
       .then((res) => res.json())
       .then((json) => {
-        console.log(typeof json);
         this._isMounted &&
           this.setState({
-            data: json,
+            mylist: json.mylist,
+            recommendations: json.recommendations,
           });
       })
       .catch((error) => {
@@ -40,29 +45,62 @@ class App extends React.Component {
           });
       });
   }
-  // handleAddClick() {
+  handleClick(id) {
+    const { mylist, recommendations } = this.state;
+    const removeItem = mylist.filter((item) => item.id === id)[0];
+    const addItem = recommendations.filter((item) => item.id === id)[0];
+    if (addItem && !removeItem) {
+      const updateRec = recommendations.filter((item) => item.id !== id);
+      this.setState({
+        mylist: [
+          ...mylist,
+          { title: addItem.title, id: addItem.id, img: addItem.img },
+        ],
+        recommendations: [...updateRec],
+      });
+    } else if (!addItem && removeItem) {
+      const updateMylist = mylist.filter((item) => item.id !== id);
+      this.setState({
+        recommendations: [
+          ...recommendations,
+          { title: removeItem.title, id: removeItem.id, img: removeItem.img },
+        ],
+        mylist: [...updateMylist],
+      });
+    }
+  }
 
-  //   this.setState(prevState=>({info : true })));
-  // }
   render() {
-    const { data, error } = this.state;
+    const { mylist, recommendations, error } = this.state;
     return (
       <div className="App">
-        <div className="NavigationBar">
-          <img src={logo} alt="logo" className="logo" />
-          <a href="#">My List</a>
-          <a href="#">Recommendations</a>
-        </div>
-        {data ? (
-          <div>
-            <Section data={data.mylist} buttonInfo="Remove from my list">
+        {error ? (
+          <p>....something is wrong....</p>
+        ) : (
+          <div className="NavigationBar">
+            <img src={logo} alt="logo" className="logo" />
+            <a href="#">My List</a>
+            <a href="#">Recommendations</a>
+          </div>
+        )}
+        {mylist && recommendations ? (
+          <Fragment>
+            <Section
+              data={mylist}
+              buttonInfo="Remove from my list"
+              onClick={this.handleClick}
+            >
               My List
             </Section>
 
-            <Section data={data.recommendations} buttonInfo="Add to my list">
+            <Section
+              data={recommendations}
+              buttonInfo="Add to my list"
+              onClick={this.handleClick}
+            >
               Recommendations
             </Section>
-          </div>
+          </Fragment>
         ) : (
           <p>data is loading...</p>
         )}

@@ -1,12 +1,10 @@
-import React, { Fragment } from "react";
+import React from "react";
 
 function Button({ onclick, children }) {
   return (
-    <Fragment>
-      <button className="btn" onClick={onclick}>
-        {children}
-      </button>
-    </Fragment>
+    <button className="btn" onClick={onclick}>
+      {children}
+    </button>
   );
 }
 

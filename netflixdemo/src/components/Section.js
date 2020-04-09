@@ -7,9 +7,11 @@ class Section extends React.Component {
     this.state = {
       target: null,
     };
+    // this.handleClick = this.handleClick.bind(this);
   }
+
   render() {
-    const { data, children, onClick, buttonInfo } = this.props;
+    const { data, children, buttonInfo, onClick } = this.props;
     return (
       <div className="section">
         <p className="section-name">{children}</p>
@@ -19,7 +21,7 @@ class Section extends React.Component {
               id={id}
               img={img}
               title={title}
-              onClick={onClick}
+              onClick={() => onClick(id)}
               buttonInfo={buttonInfo}
             />
           ))}

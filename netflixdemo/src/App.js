@@ -21,9 +21,7 @@ class App extends React.Component {
     this._isMounted = true;
     this.fetchData();
   }
-  componentDidUpdate() {
-    console.log(this.state.mylist);
-  }
+
   componentWillMount() {
     this._isMounted = false;
   }

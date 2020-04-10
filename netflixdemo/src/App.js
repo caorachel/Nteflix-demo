@@ -85,7 +85,7 @@ class App extends React.Component {
           <Fragment>
             <Section
               data={mylist}
-              buttonInfo="Remove from my list"
+              buttonInfo="Remove from list"
               onClick={this.handleClick}
             >
               My List
@@ -93,7 +93,7 @@ class App extends React.Component {
 
             <Section
               data={recommendations}
-              buttonInfo="Add to my list"
+              buttonInfo="Add to list"
               onClick={this.handleClick}
             >
               Recommendations

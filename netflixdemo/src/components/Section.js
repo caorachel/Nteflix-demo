@@ -1,10 +1,10 @@
 import React from "react";
 import MovieCard from "./MovieCard";
-import "./style.css";
+import Styles from "./Section.module.css";
 function Section({ data, children, buttonInfo, onClick }) {
   return (
-    <div className="section">
-      <p className="section-name">{children}</p>
+    <div className={Styles.section}>
+      <p className={Styles.section_name}>{children}</p>
       <ul>
         {data.map(({ id, img, title }) => (
           <MovieCard

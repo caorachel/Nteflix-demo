@@ -1,6 +1,6 @@
 # Netflix-demo
 
-This demo is a take-home challenge for Apple contractor position. It contains four components: App, Section, MovieCard and Button respectively. 
+This demo is a take-home challenge for Apple contractor position. It contains four components: App, Section, MovieCard respectively. 
 The Components structure simply is shown as below
 
 ![Demo pipeline](/Netlifx%20Demo%20pipeline.png)

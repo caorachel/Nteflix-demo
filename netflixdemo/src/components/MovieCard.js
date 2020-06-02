@@ -1,5 +1,4 @@
 import React from "react";
-// mport Button from "./Button";
 import { Button, ListItem } from "./movieCardStyle.js";
 
 function MovieCard(props) {

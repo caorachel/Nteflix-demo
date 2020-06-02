@@ -1,5 +1,4 @@
 import styled from "styled-components";
-// import { Favorite } from "@styled-icons/material/Favorite";
 export const Button = styled.button`
   border: none;
   padding: 0;
@@ -8,10 +7,6 @@ export const Button = styled.button`
   display: none;
   background-color: transparent;
   ${(props) => (props.buttonInfo ? "color: red;" : "color: white;")}
-  /* :hover {
-    ${(props) => (props.buttonInfo ? "color: white;" : "color: red;")}
-  } */
- 
 `;
 export const ListItem = styled.li`
   box-sizing: border-box;

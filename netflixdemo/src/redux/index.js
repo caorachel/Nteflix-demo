@@ -1,5 +1,4 @@
 import { createStore, applyMiddleware, compose } from "redux";
-// import axios from
 import thunk from "redux-thunk";
 const mockAPI = new Request("./data.json");
 

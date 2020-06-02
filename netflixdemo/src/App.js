@@ -2,50 +2,21 @@ import React from "react";
 import { Main } from "./style";
 import logo from "./logo.png";
 import Sections from "./components/Sections";
-const mockAPI = new Request("./data.json");
+import { connect } from "react-redux";
+import { fetchedData, handleRemoveDispatch, handleAddDispatch } from "./redux";
 
 class App extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      mylist: [],
-      recommendations: [],
-      isLoading: false,
-      error: null,
-    };
-    this.fetchData = this.fetchData.bind(this);
-    this.handleAdd = this.handleAdd.bind(this);
-    this.handleRemove = this.handleRemove.bind(this);
-  }
   componentDidMount() {
     this._isMounted = true;
-    this.fetchData();
+    this.props.fetchedData();
   }
 
   componentWillMount() {
     this._isMounted = false;
   }
-  fetchData() {
-    this.setState({ isLoading: true });
-    fetch(mockAPI)
-      .then((res) => res.json())
-      .then((json) => {
-        this._isMounted &&
-          this.setState({
-            mylist: json.mylist,
-            recommendations: json.recommendations,
-          });
-      })
-      .catch((error) => {
-        this._isMounted &&
-          this.setState({
-            error,
-          });
-      });
-  }
 
-  handleRemove(id) {
-    const { mylist } = this.state;
+  handleRemove = (id) => {
+    const { mylist } = this.props;
     let ind = -1;
     let removeItem = {};
     mylist.forEach((element, index) => {
@@ -56,16 +27,10 @@ class App extends React.Component {
     });
     mylist.splice(ind, 1);
 
-    this.setState({
-      mylist: [...mylist],
-      recommendations: [
-        ...this.state.recommendations,
-        { title: removeItem.title, id: removeItem.id, img: removeItem.img },
-      ],
-    });
-  }
-  handleAdd(id) {
-    const { recommendations } = this.state;
+    this.props.handleRemoveDispatch(mylist, removeItem);
+  };
+  handleAdd = (id) => {
+    const { recommendations } = this.props;
     let ind = -1;
     let addItem = {};
     recommendations.forEach((element, index) => {
@@ -75,17 +40,13 @@ class App extends React.Component {
       }
     });
     recommendations.splice(ind, 1);
-    this.setState({
-      recommendations: [...recommendations],
-      mylist: [
-        ...this.state.mylist,
-        { title: addItem.title, id: addItem.id, img: addItem.img },
-      ],
-    });
-  }
+
+    this.props.handleAddDispatch(recommendations, addItem);
+  };
 
   render() {
-    const { mylist, recommendations, error } = this.state;
+    const { mylist, recommendations, error } = this.props;
+
     return (
       <Main className="App">
         {error ? (
@@ -119,5 +80,15 @@ class App extends React.Component {
     );
   }
 }
-
-export default React.memo(App);
+const mapStateToProps = (state) => ({
+  mylist: state.mylist,
+  recommendations: state.recommendations,
+  isLoading: state.isLoading,
+  error: state.error,
+});
+const mapActionToProps = {
+  fetchedData,
+  handleRemoveDispatch,
+  handleAddDispatch,
+};
+export default connect(mapStateToProps, mapActionToProps)(React.memo(App));

@@ -1,28 +1,25 @@
 import React from "react";
 import MovieCard from "./MovieCard";
-import style from "styled-components";
-const Section = style.div`
-box-sizing: border-box;
-    margin: 5px 10px;
-    padding: 0 10px;
-    font-family: inherit;
-    width:100%;
+import styled from "styled-components";
+const Section = styled.div`
+  box-sizing: border-box;
+  margin: 5px 10px;
+  padding: 0 10px;
+  font-family: inherit;
+  width: 100%;
   .section_name {
     text-align: left;
     font-weight: bold;
   }
- 
 `;
-const List = style.ul`
-display: flex;
-
-padding-left: 0;
-width:100%;
-
-top:0;
-left:0;
-right:0;
-bottom:0;
+const List = styled.ul`
+  display: flex;
+  padding-left: 0;
+  width: 100%;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
 `;
 
 function Sections(props) {

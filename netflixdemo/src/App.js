@@ -1,21 +1,21 @@
-import React, { Fragment } from "react";
-import Section from "./components/Section";
-import "./App.css";
+import React from "react";
+import { Main } from "./style";
 import logo from "./logo.png";
-
+import Sections from "./components/Sections";
 const mockAPI = new Request("./data.json");
 
 class App extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      mylist: null,
-      recommendations: null,
+      mylist: [],
+      recommendations: [],
       isLoading: false,
       error: null,
     };
     this.fetchData = this.fetchData.bind(this);
-    this.handleClick = this.handleClick.bind(this);
+    this.handleAdd = this.handleAdd.bind(this);
+    this.handleRemove = this.handleRemove.bind(this);
   }
   componentDidMount() {
     this._isMounted = true;
@@ -43,68 +43,81 @@ class App extends React.Component {
           });
       });
   }
-  handleClick(id) {
-    const { mylist, recommendations } = this.state;
-    const removeItem = mylist.filter((item) => item.id === id)[0];
-    const addItem = recommendations.filter((item) => item.id === id)[0];
-    if (addItem && !removeItem) {
-      const updateRec = recommendations.filter((item) => item.id !== id);
-      this.setState({
-        mylist: [
-          ...mylist,
-          { title: addItem.title, id: addItem.id, img: addItem.img },
-        ],
-        recommendations: [...updateRec],
-      });
-    } else if (!addItem && removeItem) {
-      const updateMylist = mylist.filter((item) => item.id !== id);
-      this.setState({
-        recommendations: [
-          ...recommendations,
-          { title: removeItem.title, id: removeItem.id, img: removeItem.img },
-        ],
-        mylist: [...updateMylist],
-      });
-    }
+
+  handleRemove(id) {
+    const { mylist } = this.state;
+    let ind = -1;
+    let removeItem = {};
+    mylist.forEach((element, index) => {
+      if (element.id === id) {
+        removeItem = element;
+        ind = index;
+      }
+    });
+    mylist.splice(ind, 1);
+
+    this.setState({
+      mylist: [...mylist],
+      recommendations: [
+        ...this.state.recommendations,
+        { title: removeItem.title, id: removeItem.id, img: removeItem.img },
+      ],
+    });
+  }
+  handleAdd(id) {
+    const { recommendations } = this.state;
+    let ind = -1;
+    let addItem = {};
+    recommendations.forEach((element, index) => {
+      if (element.id === id) {
+        addItem = element;
+        ind = index;
+      }
+    });
+    recommendations.splice(ind, 1);
+    this.setState({
+      recommendations: [...recommendations],
+      mylist: [
+        ...this.state.mylist,
+        { title: addItem.title, id: addItem.id, img: addItem.img },
+      ],
+    });
   }
 
   render() {
     const { mylist, recommendations, error } = this.state;
     return (
-      <div className="App">
+      <Main className="App">
         {error ? (
           <p>....something is wrong....</p>
         ) : (
           <div className="NavigationBar">
             <img src={logo} alt="logo" className="logo" />
-            <a href="#">My List</a>
-            <a href="#">Recommendations</a>
           </div>
         )}
         {mylist && recommendations ? (
-          <Fragment>
-            <Section
-              data={mylist}
-              buttonInfo="Remove from list"
-              onClick={this.handleClick}
-            >
-              My List
-            </Section>
-
-            <Section
-              data={recommendations}
-              buttonInfo="Add to list"
-              onClick={this.handleClick}
-            >
-              Recommendations
-            </Section>
-          </Fragment>
+          <div className="lists">
+            <Sections
+              sectionTitle="My List"
+              list={mylist}
+              handleClick={this.handleRemove}
+              showFavorite={true}
+              key="list"
+            />
+            <Sections
+              sectionTitle="Recommendations"
+              list={recommendations}
+              handleClick={this.handleAdd}
+              showFavorite={false}
+              key="recommendation"
+            />
+          </div>
         ) : (
           <p>data is loading...</p>
         )}
-      </div>
+      </Main>
     );
   }
 }
 
-export default App;
+export default React.memo(App);

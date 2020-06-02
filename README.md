@@ -8,8 +8,5 @@ In this demo, I used React to implement the following functions
 - Implement ‘My List’ row and 'Recommendation' row with titles and images 
 - Display Remove and Add button when hovering over images
 - Achieve click button function to remove or add items to ‘My List’ row and "Recommendations" row
-
-The next step
-
-- Manage states using Redux or Hook   
-- Improve the effectiveness of the demo
+- Updated Manage states using Redux  
+- Improved the effectiveness of the demo
